@@ -36,7 +36,7 @@
   <h3 align="center">XPlane 11 SDK Bindings</h3>
 
   <p align="center">
-    Rust bindings for the [Xplane 11 SDK](https://developer.x-plane.com/sdk/)
+    Rust bindings for the <a href="https://developer.x-plane.com/sdk/">Xplane 11 SDK</a>
     <br />
     <a href="https://github.com/MTRNord/xplane11-sys"><strong>Explore the docs »</strong></a>
     <br />
