@@ -1,0 +1,12 @@
+[package]
+name = "xp11-sys"
+version = "0.1.0"
+authors = ["MTRNord <mtrnord1@gmail.com>"]
+edition = "2018"
+
+[build-dependencies]
+bindgen = "0.55"
+
+[dependencies]
+enum-primitive-derive = "^0.1"
+num-traits = "^0.1"
