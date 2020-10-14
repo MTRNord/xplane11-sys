@@ -2,17 +2,19 @@
 #![allow(non_camel_case_types)]
 #![allow(non_snake_case)]
 
+use enum_primitive_derive::Primitive;
 pub mod utils;
-
-include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
+pub mod bindings {
+    include!(concat!(env!("OUT_DIR"), "/bindings.rs"));
+}
 
 #[derive(Clone)]
 pub struct XPLMWindow {
-    inner: XPLMWindowID,
+    inner: bindings::XPLMWindowID,
 }
 
 impl XPLMWindow {
-    pub fn get_inner(&self) -> XPLMWindowID {
+    pub fn get_inner(&self) -> bindings::XPLMWindowID {
         self.inner
     }
 }
@@ -20,7 +22,7 @@ impl XPLMWindow {
 impl Drop for XPLMWindow {
     fn drop(&mut self) {
         unsafe {
-            XPLMDestroyWindow(self.inner);
+            bindings::XPLMDestroyWindow(self.inner);
         }
     }
 }
@@ -28,23 +30,22 @@ impl Drop for XPLMWindow {
 unsafe impl Send for XPLMWindow {}
 unsafe impl Sync for XPLMWindow {}
 
-use enum_primitive_derive::Primitive;
 #[derive(Debug, Copy, Clone, PartialEq, Primitive)]
 #[repr(i32)]
 pub enum WindowDecoration {
-    None = xplm_WindowDecorationNone,
-    RoundRectangle = xplm_WindowDecorationRoundRectangle,
-    SelfDecorated = xplm_WindowDecorationSelfDecorated,
-    SelfDecoratedResizeable = xplm_WindowDecorationSelfDecoratedResizable,
+    None = bindings::xplm_WindowDecorationNone,
+    RoundRectangle = bindings::xplm_WindowDecorationRoundRectangle,
+    SelfDecorated = bindings::xplm_WindowDecorationSelfDecorated,
+    SelfDecoratedResizeable = bindings::xplm_WindowDecorationSelfDecoratedResizable,
 }
 
 #[derive(Debug, Copy, Clone, PartialEq, Primitive)]
 #[repr(i32)]
 pub enum WindowLayer {
-    FlightOverlay = xplm_WindowLayerFlightOverlay,
-    FloatingWindows = xplm_WindowLayerFloatingWindows,
-    Modal = xplm_WindowLayerModal,
-    GrowlNotifications = xplm_WindowLayerGrowlNotifications,
+    FlightOverlay = bindings::xplm_WindowLayerFlightOverlay,
+    FloatingWindows = bindings::xplm_WindowLayerFloatingWindows,
+    Modal = bindings::xplm_WindowLayerModal,
+    GrowlNotifications = bindings::xplm_WindowLayerGrowlNotifications,
 }
 
 pub struct XPLMWindowBuilder {
@@ -53,15 +54,15 @@ pub struct XPLMWindowBuilder {
     right: i32,
     bottom: i32,
     visible: i32,
-    drawWindowFunc: XPLMDrawWindow_f,
-    handleMouseClickFunc: XPLMHandleMouseClick_f,
-    handleKeyFunc: XPLMHandleKey_f,
-    handleCursorFunc: XPLMHandleCursor_f,
-    handleMouseWheelFunc: XPLMHandleMouseWheel_f,
+    drawWindowFunc: bindings::XPLMDrawWindow_f,
+    handleMouseClickFunc: bindings::XPLMHandleMouseClick_f,
+    handleKeyFunc: bindings::XPLMHandleKey_f,
+    handleCursorFunc: bindings::XPLMHandleCursor_f,
+    handleMouseWheelFunc: bindings::XPLMHandleMouseWheel_f,
     refcon: *mut ::std::os::raw::c_void,
     decorateAsFloatingWindow: WindowDecoration,
     layer: WindowLayer,
-    handleRightClickFunc: XPLMHandleMouseClick_f,
+    handleRightClickFunc: bindings::XPLMHandleMouseClick_f,
 }
 
 impl XPLMWindowBuilder {
@@ -103,25 +104,31 @@ impl XPLMWindowBuilder {
         self.visible = visible;
         self
     }
-    pub fn drawWindowFunc<'a>(&'a mut self, drawWindowFunc: XPLMDrawWindow_f) -> &'a mut Self {
+    pub fn drawWindowFunc<'a>(
+        &'a mut self,
+        drawWindowFunc: bindings::XPLMDrawWindow_f,
+    ) -> &'a mut Self {
         self.drawWindowFunc = drawWindowFunc;
         self
     }
 
     pub fn handleMouseClickFunc<'a>(
         &'a mut self,
-        handleMouseClickFunc: XPLMHandleMouseClick_f,
+        handleMouseClickFunc: bindings::XPLMHandleMouseClick_f,
     ) -> &'a mut Self {
         self.handleMouseClickFunc = handleMouseClickFunc;
         self
     }
-    pub fn handleKeyFunc<'a>(&'a mut self, handleKeyFunc: XPLMHandleKey_f) -> &'a mut Self {
+    pub fn handleKeyFunc<'a>(
+        &'a mut self,
+        handleKeyFunc: bindings::XPLMHandleKey_f,
+    ) -> &'a mut Self {
         self.handleKeyFunc = handleKeyFunc;
         self
     }
     pub fn handleCursorFunc<'a>(
         &'a mut self,
-        handleCursorFunc: XPLMHandleCursor_f,
+        handleCursorFunc: bindings::XPLMHandleCursor_f,
     ) -> &'a mut Self {
         self.handleCursorFunc = handleCursorFunc;
         self
@@ -129,7 +136,7 @@ impl XPLMWindowBuilder {
 
     pub fn handleMouseWheelFunc<'a>(
         &'a mut self,
-        handleMouseWheelFunc: XPLMHandleMouseWheel_f,
+        handleMouseWheelFunc: bindings::XPLMHandleMouseWheel_f,
     ) -> &'a mut Self {
         self.handleMouseWheelFunc = handleMouseWheelFunc;
         self
@@ -155,15 +162,15 @@ impl XPLMWindowBuilder {
 
     pub fn handleRightClickFunc<'a>(
         &'a mut self,
-        handleRightClickFunc: XPLMHandleMouseClick_f,
+        handleRightClickFunc: bindings::XPLMHandleMouseClick_f,
     ) -> &'a mut Self {
         self.handleRightClickFunc = handleRightClickFunc;
         self
     }
     pub fn build(&self) -> XPLMWindow {
         use num_traits::ToPrimitive;
-        let params = &mut XPLMCreateWindow_t {
-            structSize: std::mem::size_of::<XPLMCreateWindow_t>() as i32,
+        let params = &mut bindings::XPLMCreateWindow_t {
+            structSize: std::mem::size_of::<bindings::XPLMCreateWindow_t>() as i32,
             left: self.left,
             top: self.top,
             right: self.right,
@@ -179,9 +186,9 @@ impl XPLMWindowBuilder {
             layer: self.layer.to_i32().unwrap(),
             handleRightClickFunc: self.handleRightClickFunc,
         };
-        let window: XPLMWindowID;
+        let window: bindings::XPLMWindowID;
         unsafe {
-            window = XPLMCreateWindowEx(params);
+            window = bindings::XPLMCreateWindowEx(params);
         }
         XPLMWindow { inner: window }
     }
