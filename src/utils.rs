@@ -31,3 +31,12 @@ pub mod log {
         }
     }
 }
+
+use std::ffi::CString;
+pub fn write_c_char(string: &str, ptr: *mut ::std::os::raw::c_char) -> anyhow::Result<()> {
+    let c_str = CString::new(string)?;
+    unsafe {
+        std::ptr::copy_nonoverlapping(c_str.as_ptr(), ptr, c_str.as_bytes_with_nul().len());
+    }
+    Ok(())
+}

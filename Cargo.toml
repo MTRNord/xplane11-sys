@@ -10,3 +10,4 @@ bindgen = "0.55"
 [dependencies]
 enum-primitive-derive = "^0.1"
 num-traits = "^0.1"
+anyhow = "1.0"
