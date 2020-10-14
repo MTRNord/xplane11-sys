@@ -33,10 +33,10 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <h3 align="center">YOUR_TITLE</h3>
+  <h3 align="center">XPlane 11 SDK Bindings</h3>
 
   <p align="center">
-    YOUR_SHORT_DESCRIPTION
+    Rust bindings for the [Xplane 11 SDK](https://developer.x-plane.com/sdk/)
     <br />
     <a href="https://github.com/MTRNord/xplane11-sys"><strong>Explore the docs »</strong></a>
     <br />
