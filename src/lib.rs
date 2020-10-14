@@ -3,6 +3,8 @@
 #![allow(non_snake_case)]
 
 pub mod display;
+pub mod graphics;
+
 pub mod utils;
 pub mod bindings {
     include!(concat!(env!("OUT_DIR"), "/bindings.rs"));

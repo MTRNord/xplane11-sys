@@ -186,3 +186,16 @@ impl XPLMWindowBuilder {
         XPLMWindow { inner: window }
     }
 }
+
+pub fn XPLMGetWindowGeometry(in_window_id: bindings::XPLMWindowID) -> (i32,i32,i32,i32) {
+    let mut l = 0;
+    let mut t = 0;
+    let mut r = 0;
+    let mut b = 0;
+
+    unsafe {
+        XPLMGetWindowGeometry(in_window_id, &mut l, &mut t, &mut r, &mut b);
+    }
+
+    (l,t,r,b)
+}
