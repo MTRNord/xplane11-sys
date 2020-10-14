@@ -194,7 +194,7 @@ pub fn XPLMGetWindowGeometry(in_window_id: bindings::XPLMWindowID) -> (i32,i32,i
     let mut b = 0;
 
     unsafe {
-        XPLMGetWindowGeometry(in_window_id, &mut l, &mut t, &mut r, &mut b);
+        bindings::XPLMGetWindowGeometry(in_window_id, &mut l, &mut t, &mut r, &mut b);
     }
 
     (l,t,r,b)
